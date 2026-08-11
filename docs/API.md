@@ -29,7 +29,8 @@ the versioned resource path the documented default.
 - IDs: 1-80 characters, starting alphanumeric, then alphanumeric plus `._:-`.
 - 1-64 limits, 1-500 samples, 1-64 values per sample, at most 10,000 measurements.
 - Timestamps must strictly increase and fall within 30 days past / 5 minutes future.
-- Every value needs a matching limit. Values and limit endpoints must be finite, with `low < high`.
+- Every value needs a matching limit. Values and limit endpoints must be finite, within +/-1e12,
+  and use `low < high`.
 - Unknown JSON properties and malformed shapes return `400`; invariant violations return `422`.
 
 Errors use `application/problem+json` with RFC 9457 members plus `requestId` and, where useful, an

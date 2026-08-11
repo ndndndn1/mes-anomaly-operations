@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HexFormat;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -58,6 +59,12 @@ public class EvaluationService {
         this.mapper = mapper;
         this.validator = validator;
         this.detector = new RobustDetector(threshold);
+        if (windowSize < 5 || windowSize > 1_000) {
+            throw new IllegalArgumentException("window size must be between 5 and 1000");
+        }
+        if (cacheTtl.isZero() || cacheTtl.isNegative() || cacheTtl.compareTo(Duration.ofDays(30)) > 0) {
+            throw new IllegalArgumentException("cache TTL must be positive and no more than 30 days");
+        }
         this.windowSize = windowSize;
         this.cacheTtl = cacheTtl;
         this.failureInjectionEnabled = failureInjectionEnabled;
@@ -87,13 +94,15 @@ public class EvaluationService {
                 request.lineId().length() + "|" + request.lineId() + request.equipmentId());
 
         Map<String, List<Double>> history = new LinkedHashMap<>();
-        request.limits().keySet().stream().sorted().forEach(sensor -> history.put(
-                sensor,
-                new ArrayList<>(jdbc.query(
+        request.limits().keySet().stream().sorted().forEach(sensor -> {
+            List<Double> baseline = new ArrayList<>(jdbc.query(
                         "select value from sensor_sample where line_id=? and equipment_id=? "
                                 + "and sensor=? order by observed_at desc,id desc limit ?",
                         (rs, row) -> rs.getDouble(1),
-                        request.lineId(), request.equipmentId(), sensor, windowSize))));
+                        request.lineId(), request.equipmentId(), sensor, windowSize));
+            Collections.reverse(baseline);
+            history.put(sensor, baseline);
+        });
 
         List<Measurement> measurements = new ArrayList<>();
         List<ApiModels.Verdict> verdicts = new ArrayList<>();

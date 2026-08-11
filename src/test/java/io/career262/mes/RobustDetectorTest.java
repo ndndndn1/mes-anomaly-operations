@@ -2,6 +2,7 @@ package io.career262.mes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -21,5 +22,10 @@ class RobustDetectorTest {
 
     @Test void normalValuePasses() {
         assertEquals("normal", detector.evaluate(45.05, baseline, 10.0, 80.0).severity());
+    }
+
+    @Test void rejectsInvalidThresholdConfiguration() {
+        assertThrows(IllegalArgumentException.class, () -> new RobustDetector(Double.NaN));
+        assertThrows(IllegalArgumentException.class, () -> new RobustDetector(0.0));
     }
 }
