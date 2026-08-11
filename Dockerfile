@@ -4,7 +4,7 @@ COPY web/package.json web/package-lock.json web/tsconfig.json web/vite.config.ts
 COPY web/src ./src
 RUN npm ci --ignore-scripts && npm run build
 
-FROM maven:3.9-eclipse-temurin-21 AS backend-build
+FROM maven:3-eclipse-temurin-26 AS backend-build
 WORKDIR /workspace
 COPY pom.xml .
 COPY src ./src
