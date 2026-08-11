@@ -14,7 +14,7 @@ RUN mvn -B test package
 FROM backend-build AS test
 CMD ["mvn", "-B", "test"]
 
-FROM eclipse-temurin:21-jre AS runtime
+FROM eclipse-temurin:25-jre AS runtime
 LABEL org.opencontainers.image.source="https://github.com/ndndndn1/mes-anomaly-operations"
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl \
