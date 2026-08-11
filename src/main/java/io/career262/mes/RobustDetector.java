@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class RobustDetector {
-    public record Result(String severity, String rule, double score) {}
+    public record Result(String severity, String rule, Double score) {}
 
     private final double threshold;
 
@@ -15,7 +15,9 @@ public final class RobustDetector {
 
     public Result evaluate(double value, List<Double> history, double low, double high) {
         if (value < low || value > high) {
-            return new Result("critical", "absolute_limit", Double.POSITIVE_INFINITY);
+            // JSON has no representation for Infinity. An absolute-limit verdict is categorical,
+            // so a statistical score is deliberately absent rather than fabricated.
+            return new Result("critical", "absolute_limit", null);
         }
         if (history.size() < 5) {
             return new Result("normal", "insufficient_history", 0.0);
