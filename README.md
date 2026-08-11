@@ -19,7 +19,9 @@ it does **not** control equipment, speak OPC-UA/Modbus, or provide production au
   cache; Redis failure cannot reverse or fail a committed evaluation.
 - Every response carries `X-Request-ID`; Prometheus metrics are exposed at `/actuator/prometheus`.
 
-See [API examples](docs/API.md), [architecture](docs/ARCHITECTURE.md),
+See [enterprise requirements](docs/enterprise-requirements.md),
+[quality scorecard](docs/quality-scorecard.md), [API examples](docs/API.md),
+[architecture](docs/ARCHITECTURE.md),
 [operations runbook](docs/RUNBOOK.md), [testing](docs/TESTING.md), and
 [threat model](docs/THREAT_MODEL.md).
 

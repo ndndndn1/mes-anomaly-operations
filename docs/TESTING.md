@@ -11,5 +11,5 @@ A second application instance points to an unreachable Redis port and must still
 events, proving PostgreSQL authority and cache fallback.
 
 CI also validates the frontend lockfile build, npm production audit, Compose configuration,
-requirements coverage, scorecard structure, container build, dependency review, image
+requirements coverage, scorecard structure, container build, dependency and image
 vulnerability policy, and runtime smoke.
