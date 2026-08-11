@@ -19,7 +19,9 @@ jobs:
       - name: Unit tests
         run: docker compose --profile test run --rm test
       - name: Integration and failure tests
-        run: docker compose --profile test run --rm integration-test
+        run: |
+          docker compose --profile test up -d --build --wait app app-fallback sensor-mock plc-mock verifier-mock
+          docker compose --profile test run --rm --no-deps integration-test
       - name: Static contracts
         run: |
           docker compose config --quiet
