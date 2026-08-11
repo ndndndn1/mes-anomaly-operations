@@ -2,13 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId><version>3.4.5</version>
+    <groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-parent</artifactId><version>3.5.12</version>
   </parent>
   <groupId>io.career262</groupId><artifactId>mes-anomaly-operations</artifactId><version>1.0.0</version>
   <properties>
     <java.version>21</java.version>
-    <!-- Boot 3.4.x-compatible security override; image CI verifies the resolved JAR. -->
+    <!-- Explicit security floors; image CI verifies the fully resolved JAR. -->
     <tomcat.version>10.1.55</tomcat.version>
+    <postgresql.version>42.7.12</postgresql.version>
   </properties>
   <dependencies>
     <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-web</artifactId></dependency>

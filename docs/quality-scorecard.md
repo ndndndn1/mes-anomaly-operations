@@ -10,7 +10,7 @@ The canonical machine-readable record is `quality/scorecard.json`, validated by
 | Verification | 18 | 20 | Unit, live integration, concurrency, rollback, fallback, mocks, soak harness |
 | Operability | 14 | 15 | Request IDs, Prometheus, health probes, resource ceilings, runbook |
 | Security | 13 | 15 | Non-root/read-only container, least privilege, localhost bind, threat model |
-| Supply chain | 8 | 10 | Lockfile, npm ci/audit, Enforcer, Trivy, SBOM, provenance, Dependabot |
+| Supply chain | 8 | 10 | Lockfile, npm ci/audit, Enforcer, fail-closed Trivy, SBOM, provenance, Dependabot |
 | Documentation | 5 | 5 | Requirements, API, architecture, testing, operations, threat model |
 | **Total** | **92** | **100** | **Passes target 80** |
 

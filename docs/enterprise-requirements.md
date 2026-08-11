@@ -16,7 +16,7 @@ the smallest relevant implementation boundary.
 | Metrics, request IDs, health, and resource limits | Met | Prometheus, `RequestIdFilter`, Compose boundaries, runbook |
 | Non-root/read-only container hardening | Met | runtime UID 10001, dropped capabilities, no-new-privileges |
 | Locked frontend and clear operator semantics | Met | exact npm versions, lockfile/`npm ci`, result table and replay UI |
-| CI and supply-chain gates | Met | unit/integration/smoke, audits, Trivy, Enforcer, SBOM/provenance |
+| CI and supply-chain gates | Met | unit/integration/smoke, fail-closed dependency/image Trivy, Enforcer, SBOM/provenance |
 | Documentation and score at least 80 | Met | API/architecture/runbook/testing/threat model; validated 92/100 |
 
 ## Scope boundary
