@@ -1,41 +1,65 @@
 # MES Anomaly Operations
 
-A Spring Boot, PostgreSQL, Redis, and React/TypeScript vertical slice for repeatable sensor anomaly
-judgment in manufacturing execution workflows.
+An enterprise-oriented Spring Boot, PostgreSQL, Redis, and React/TypeScript reference slice for
+repeatable sensor anomaly evaluation in manufacturing operations. It is decision-support software:
+it does **not** control equipment, speak OPC-UA/Modbus, or provide production authentication.
 
-## What it implements
+## Contract and guarantees
 
-- Ordered batch validation for line and equipment sensor samples.
-- Absolute safety limits and robust z-score detection based on Redis history.
-- PostgreSQL persistence with a Flyway-managed schema and lookup index.
-- A React/TypeScript page that exercises the same API served by Spring Boot.
-- Health checks and dependency readiness in Docker Compose.
+- `POST /api/v1/evaluations` is the canonical API; `POST /api/judge` is a compatibility alias with
+  the same request and response.
+- A caller-supplied `eventId` is an idempotency key. Repeating an identical payload returns the
+  stored verdict (`200`, `replayed: true`); reusing it for different content returns RFC 9457
+  `409 application/problem+json`.
+- IDs, timestamps, sensor counts, measurement counts, numeric values, and limits are strictly
+  bounded. Non-finite numbers are rejected. Absolute-limit verdicts use `score: null` because a
+  robust z-score does not apply; the API never emits invalid JSON `Infinity`.
+- PostgreSQL is authoritative. Equipment-scoped advisory locking, event claim, baseline reads, and
+  JDBC batch writes share one transaction. Redis is a bounded, 24-hour, after-commit acceleration
+  cache; Redis failure cannot reverse or fail a committed evaluation.
+- Every response carries `X-Request-ID`; Prometheus metrics are exposed at `/actuator/prometheus`.
+
+See [API examples](docs/API.md), [architecture](docs/ARCHITECTURE.md),
+[operations runbook](docs/RUNBOOK.md), [testing](docs/TESTING.md), and
+[threat model](docs/THREAT_MODEL.md).
 
 ## Run and verify
+
+The only host-bound port is `127.0.0.1:8802`.
 
 ```bash
 docker compose up -d --build --wait
 python3 smoke.py
+docker compose --profile test run --rm test
+docker compose --profile test run --rm integration-test
+python3 quality/check_score.py
 docker compose down
 ```
 
-The service is available only on `127.0.0.1:8802`. The smoke scenario sends six baseline samples
-and one out-of-range temperature, then verifies the persisted evaluation response.
+The test profile provides deterministic HTTP sensor, PLC-status, and result-verifier doubles. The
+PLC double is explicitly read-only (`controlSupported: false`). Integration checks cover the
+versioned and compatibility paths, concurrent idempotency, conflict detection, transaction
+rollback, unreachable-Redis fallback, RFC 9457 errors, request IDs, metrics, and mocks.
 
-Run unit tests independently with:
+For a configurable soak after the stack is healthy:
 
 ```bash
-docker compose run --rm test
+SOAK_DURATION_SECONDS=3600 SOAK_RATE_PER_SECOND=20 python3 test/soak.py
 ```
 
-## Design notes
+The long soak is intentionally not part of pull-request CI. Coordinate its duration and machine
+load before running it on a shared host.
 
-Redis contains a bounded per-sensor history for low-latency scoring; PostgreSQL remains the durable
-record. An explicit `/api/seed` endpoint supports controlled cold-start seeding. The detector uses
-deterministic statistics and does not substitute fixed mock output for a model or rule engine.
+## Deployment notes
 
-## Limits
+The Compose file sets CPU, memory, PID, read-only filesystem, dropped-capability, and
+`no-new-privileges` boundaries for the application. The runtime image uses UID/GID `10001`, and the
+frontend uses a committed lockfile with `npm ci`. Replace local database credentials with a secrets
+provider in any real deployment and terminate TLS at an authenticated ingress.
 
-- Authentication and tenant isolation are deployment concerns outside this reference slice.
-- Site-specific alarm codes and calibrated thresholds must be supplied before production use.
-- Long-term analytics should consume the persisted verdict stream rather than Redis history.
+## Explicit non-goals
+
+- Equipment actuation or safety interlocks
+- OPC-UA, Modbus, or vendor PLC protocol integration
+- Authentication, authorization, tenancy, or Internet exposure
+- A substitute for calibrated site thresholds, alarm management, or a safety-rated system
