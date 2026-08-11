@@ -10,6 +10,7 @@ services:
       DATABASE_USER: mes
       DATABASE_PASSWORD: mes-local
       REDIS_HOST: redis
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError
     depends_on:
       postgres: {condition: service_healthy}
       redis: {condition: service_healthy}
@@ -18,6 +19,13 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+    mem_limit: 768m
+    cpus: 1.0
   postgres:
     image: postgres:17-alpine
     environment:
@@ -29,15 +37,117 @@ services:
       interval: 5s
       timeout: 3s
       retries: 20
+    volumes: [postgres-data:/var/lib/postgresql/data]
+    pids_limit: 256
+    mem_limit: 512m
+    cpus: 1.0
   redis:
     image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "no", "--maxmemory", "64mb", "--maxmemory-policy", "allkeys-lru"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 3s
       retries: 20
+    pids_limit: 128
+    mem_limit: 128m
+    cpus: 0.5
   test:
     build:
       context: .
       target: test
     profiles: ["test"]
+  app-fallback:
+    build:
+      context: .
+      target: runtime
+    profiles: ["test"]
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/mes
+      DATABASE_USER: mes
+      DATABASE_PASSWORD: mes-local
+      REDIS_HOST: 127.0.0.1
+      REDIS_PORT: 6399
+      SERVER_PORT: 8081
+      TEST_FAILURE_INJECTION_ENABLED: "true"
+      MANAGEMENT_HEALTH_REDIS_ENABLED: "false"
+      JAVA_TOOL_OPTIONS: -XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError
+    depends_on:
+      postgres: {condition: service_healthy}
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8081/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+    mem_limit: 768m
+    cpus: 1.0
+  sensor-mock:
+    image: python:3.13-alpine
+    profiles: ["test"]
+    environment: {MOCK_ROLE: sensor}
+    volumes: ["./test/mocks:/opt/mocks:ro"]
+    command: ["python", "/opt/mocks/server.py"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/health"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  plc-mock:
+    image: python:3.13-alpine
+    profiles: ["test"]
+    environment: {MOCK_ROLE: plc}
+    volumes: ["./test/mocks:/opt/mocks:ro"]
+    command: ["python", "/opt/mocks/server.py"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/health"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  verifier-mock:
+    image: python:3.13-alpine
+    profiles: ["test"]
+    environment: {MOCK_ROLE: verifier}
+    volumes: ["./test/mocks:/opt/mocks:ro"]
+    command: ["python", "/opt/mocks/server.py"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://127.0.0.1:8080/health"]
+      interval: 2s
+      timeout: 2s
+      retries: 20
+    read_only: true
+    tmpfs: [/tmp]
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+  integration-test:
+    build:
+      context: .
+      target: integration-test
+    profiles: ["test"]
+    environment:
+      API_URL: http://app:8080
+      FALLBACK_API_URL: http://app-fallback:8081
+      SENSOR_MOCK_URL: http://sensor-mock:8080
+      PLC_MOCK_URL: http://plc-mock:8080
+      VERIFIER_MOCK_URL: http://verifier-mock:8080
+    depends_on:
+      app: {condition: service_healthy}
+      app-fallback: {condition: service_healthy}
+      sensor-mock: {condition: service_healthy}
+      plc-mock: {condition: service_healthy}
+      verifier-mock: {condition: service_healthy}
+
+volumes:
+  postgres-data:
