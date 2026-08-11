@@ -23,8 +23,8 @@ final class ApiModels {
             @NotBlank @Size(max = 80) @Pattern(regexp = ID) String eventId,
             @NotBlank @Size(max = 80) @Pattern(regexp = ID) String lineId,
             @NotBlank @Size(max = 80) @Pattern(regexp = ID) String equipmentId,
-            @NotEmpty @Size(max = 64) Map<String, @Valid Limits> limits,
-            @NotEmpty @Size(max = 500) List<@Valid Sample> samples) {}
+            @NotEmpty @Size(max = 64) Map<String, @NotNull @Valid Limits> limits,
+            @NotEmpty @Size(max = 500) List<@NotNull @Valid Sample> samples) {}
 
     record Verdict(
             Instant timestamp,

@@ -10,6 +10,9 @@ public final class RobustDetector {
     private final double threshold;
 
     public RobustDetector(double threshold) {
+        if (!Double.isFinite(threshold) || threshold <= 0) {
+            throw new IllegalArgumentException("threshold must be finite and positive");
+        }
         this.threshold = threshold;
     }
 

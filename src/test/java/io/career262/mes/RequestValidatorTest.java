@@ -29,6 +29,14 @@ class RequestValidatorTest {
     }
 
     @Test
+    void rejectsFiniteButOperationallyUnboundedValues() {
+        assertThrows(ApiProblemException.class, () -> validator.validate(new ApiModels.EvaluationRequest(
+                "evt-1", "line-1", "press-1",
+                Map.of("temperature", new ApiModels.Limits(-2.0e12, 2.0e12)),
+                List.of(new ApiModels.Sample(NOW, Map.of("temperature", 1.5e12))))));
+    }
+
+    @Test
     void rejectsDuplicateOrReversedTimestamps() {
         assertThrows(ApiProblemException.class, () -> validator.validate(request(List.of(
                 new ApiModels.Sample(NOW, Map.of("temperature", 45.0)),

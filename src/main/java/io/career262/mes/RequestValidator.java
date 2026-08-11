@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 final class RequestValidator {
     private static final Pattern SENSOR = Pattern.compile("[A-Za-z][A-Za-z0-9_.:-]{0,79}");
     private static final int MAX_MEASUREMENTS = 10_000;
+    private static final double MAX_ABSOLUTE_VALUE = 1_000_000_000_000.0;
     private static final Duration MAX_AGE = Duration.ofDays(30);
     private static final Duration MAX_FUTURE = Duration.ofMinutes(5);
     private final Clock clock;
@@ -39,8 +40,8 @@ final class RequestValidator {
             ApiModels.Limits limits = entry.getValue();
             if (limits == null || limits.low() == null || limits.high() == null) {
                 errors.put(path, "low and high are required");
-            } else if (!Double.isFinite(limits.low()) || !Double.isFinite(limits.high())) {
-                errors.put(path, "limits must be finite numbers");
+            } else if (!bounded(limits.low()) || !bounded(limits.high())) {
+                errors.put(path, "limits must be finite and within +/-1e12");
             } else if (limits.low() >= limits.high()) {
                 errors.put(path, "low must be less than high");
             }
@@ -67,8 +68,8 @@ final class RequestValidator {
                     errors.put(valuePath, "sensor name must match " + SENSOR.pattern());
                 } else if (!request.limits().containsKey(value.getKey())) {
                     errors.put(valuePath, "a matching limit is required");
-                } else if (value.getValue() == null || !Double.isFinite(value.getValue())) {
-                    errors.put(valuePath, "value must be a finite number");
+                } else if (value.getValue() == null || !bounded(value.getValue())) {
+                    errors.put(valuePath, "value must be finite and within +/-1e12");
                 }
             }
         }
@@ -82,5 +83,9 @@ final class RequestValidator {
 
     private static boolean validSensor(String value) {
         return value != null && SENSOR.matcher(value).matches();
+    }
+
+    private static boolean bounded(double value) {
+        return Double.isFinite(value) && Math.abs(value) <= MAX_ABSOLUTE_VALUE;
     }
 }
