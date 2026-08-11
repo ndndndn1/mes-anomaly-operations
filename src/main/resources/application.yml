@@ -1,4 +1,7 @@
 spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://postgres:5432/mes}
     username: ${DATABASE_USER:mes}
@@ -6,15 +9,28 @@ spring:
   data:
     redis:
       host: ${REDIS_HOST:redis}
-      port: 6379
+      port: ${REDIS_PORT:6379}
+      timeout: 250ms
+      connect-timeout: 250ms
   flyway:
     enabled: true
 management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
   endpoint:
     health:
       probes:
         enabled: true
+  metrics:
+    tags:
+      application: mes-anomaly-operations
+server:
+  shutdown: graceful
+  max-http-request-header-size: 16KB
+spring.lifecycle.timeout-per-shutdown-phase: 20s
+detector:
+  window-size: ${DETECTOR_WINDOW_SIZE:20}
+  z-threshold: ${DETECTOR_Z_THRESHOLD:3.0}
+  cache-ttl: ${DETECTOR_CACHE_TTL:PT24H}

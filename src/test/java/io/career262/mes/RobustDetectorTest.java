@@ -1,6 +1,7 @@
 package io.career262.mes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ class RobustDetectorTest {
 
     @Test void absoluteLimitWins() {
         assertEquals("absolute_limit", detector.evaluate(92.0, baseline, 10.0, 80.0).rule());
+        assertNull(detector.evaluate(92.0, baseline, 10.0, 80.0).score());
     }
 
     @Test void distributionOutlierIsDetected() {
