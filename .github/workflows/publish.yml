@@ -31,17 +31,15 @@ jobs:
       - if: always()
         run: docker compose --profile test down -v
 
-  dependency-review:
-    if: github.event_name == 'pull_request'
+  dependency-scan:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
-        with:
-          fail-on-severity: high
+      - name: Scan declared and locked dependencies
+        run: >-
+          docker run --rm -v "$PWD:/work:ro" aquasec/trivy:0.58.2
+          fs --scanners vuln --exit-code 1 --ignore-unfixed
+          --severity HIGH,CRITICAL /work
 
   image-scan:
     runs-on: ubuntu-latest
