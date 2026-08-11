@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "target": 80,
+  "score": 92,
+  "categories": [
+    {"id": "api-contract", "max": 15, "earned": 15, "evidence": ["Versioned and compatibility endpoints, RFC 9457, bounded finite validation, nullable score"]},
+    {"id": "data-integrity", "max": 20, "earned": 19, "evidence": ["PostgreSQL transaction, advisory serialization, event hash idempotency, JDBC batches, after-commit Redis"]},
+    {"id": "verification", "max": 20, "earned": 18, "evidence": ["JUnit plus Compose integration, concurrency, rollback, Redis fallback, deterministic mocks, soak harness"]},
+    {"id": "operability", "max": 15, "earned": 14, "evidence": ["Request IDs, health probes, Prometheus metrics, TTL cache, resource ceilings, runbook"]},
+    {"id": "security", "max": 15, "earned": 13, "evidence": ["Non-root read-only runtime, dropped capabilities, localhost binding, strict inputs, threat model"]},
+    {"id": "supply-chain", "max": 10, "earned": 8, "evidence": ["npm lock and ci, Maven Enforcer, dependency review, npm audit, container vulnerability gate, provenance"]},
+    {"id": "documentation", "max": 5, "earned": 5, "evidence": ["API, architecture, operations, testing, threat model, and explicit non-goals"]}
+  ],
+  "hard_gates": {
+    "tests": true,
+    "runtime_smoke": true,
+    "memory": true,
+    "security": true,
+    "docs_examples": true
+  }
+}

@@ -5,20 +5,64 @@ on:
   pull_request:
 permissions:
   contents: read
-  packages: write
-  attestations: write
-  id-token: write
+
 jobs:
   verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: docker compose run --rm test
-      - run: docker compose config --quiet
+      - uses: actions/setup-node@v4
+        with: {node-version: 22, cache: npm, cache-dependency-path: web/package-lock.json}
+      - name: Locked frontend build and audit
+        working-directory: web
+        run: npm ci --ignore-scripts && npm run build && npm audit --omit=dev --audit-level=high
+      - name: Unit tests
+        run: docker compose --profile test run --rm test
+      - name: Integration and failure tests
+        run: docker compose --profile test run --rm integration-test
+      - name: Static contracts
+        run: |
+          docker compose config --quiet
+          python3 -m json.tool requirements-coverage.json >/dev/null
+          python3 quality/check_score.py
+          python3 quality/check_supply_chain.py
+      - name: Runtime smoke
+        run: python3 smoke.py
+      - if: always()
+        run: docker compose --profile test down -v
+
+  dependency-review:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  image-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build --target runtime -t mes-anomaly-operations:ci .
+      - name: Block fixed critical image vulnerabilities
+        run: >-
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock
+          aquasec/trivy:0.58.2 image --exit-code 1 --ignore-unfixed
+          --severity CRITICAL mes-anomaly-operations:ci
+
   image:
     if: github.event_name == 'push'
-    needs: verify
+    needs: [verify, image-scan]
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       - uses: docker/login-action@v3
@@ -32,7 +76,14 @@ jobs:
             type=sha
       - uses: docker/build-push-action@v6
         id: push
-        with: {context: ., target: runtime, push: true, tags: "${{ steps.meta.outputs.tags }}", labels: "${{ steps.meta.outputs.labels }}"}
+        with:
+          context: .
+          target: runtime
+          push: true
+          tags: "${{ steps.meta.outputs.tags }}"
+          labels: "${{ steps.meta.outputs.labels }}"
+          provenance: mode=max
+          sbom: true
       - uses: actions/attest-build-provenance@v2
         with:
           subject-name: ghcr.io/${{ github.repository }}
