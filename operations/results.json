@@ -1,0 +1,95 @@
+{
+  "scope": "isolated synthetic PostgreSQL; not Klarity, Oracle, or production validation",
+  "image_id": "sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193",
+  "scenarios": [
+    {
+      "mode": "autocommit_baseline",
+      "fault": "none",
+      "passed": true,
+      "returncode": 0,
+      "original_preserved": false,
+      "seconds": 0.2989
+    },
+    {
+      "mode": "autocommit_baseline",
+      "fault": "invalid_sql",
+      "passed": false,
+      "returncode": 3,
+      "original_preserved": false,
+      "seconds": 0.2374
+    },
+    {
+      "mode": "autocommit_baseline",
+      "fault": "lock_timeout",
+      "passed": true,
+      "returncode": 3,
+      "original_preserved": true,
+      "seconds": 0.7894
+    },
+    {
+      "mode": "autocommit_baseline",
+      "fault": "duplicate_key",
+      "passed": false,
+      "returncode": 3,
+      "original_preserved": false,
+      "seconds": 0.2327
+    },
+    {
+      "mode": "autocommit_baseline",
+      "fault": "disconnect",
+      "passed": false,
+      "returncode": 2,
+      "original_preserved": false,
+      "seconds": 0.205
+    },
+    {
+      "mode": "transactional",
+      "fault": "none",
+      "passed": true,
+      "returncode": 0,
+      "original_preserved": false,
+      "seconds": 0.2896
+    },
+    {
+      "mode": "transactional",
+      "fault": "invalid_sql",
+      "passed": true,
+      "returncode": 3,
+      "original_preserved": true,
+      "seconds": 0.2008
+    },
+    {
+      "mode": "transactional",
+      "fault": "lock_timeout",
+      "passed": true,
+      "returncode": 3,
+      "original_preserved": true,
+      "seconds": 0.7179
+    },
+    {
+      "mode": "transactional",
+      "fault": "duplicate_key",
+      "passed": true,
+      "returncode": 3,
+      "original_preserved": true,
+      "seconds": 0.234
+    },
+    {
+      "mode": "transactional",
+      "fault": "disconnect",
+      "passed": true,
+      "returncode": 2,
+      "original_preserved": true,
+      "seconds": 0.2016
+    }
+  ],
+  "transactional_passed": 5,
+  "transactional_total": 5,
+  "baseline_passed": 2,
+  "baseline_total": 5,
+  "unexecuted": [
+    "Klarity KD/ACE upgrade",
+    "Oracle/PL-SQL compatibility",
+    "customer production rollout"
+  ]
+}

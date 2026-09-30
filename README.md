@@ -65,3 +65,7 @@ provider in any real deployment and terminate TLS at an authenticated ingress.
 - OPC-UA, Modbus, or vendor PLC protocol integration
 - Authentication, authorization, tenancy, or Internet exposure
 - A substitute for calibrated site thresholds, alarm management, or a safety-rated system
+
+## Manufacturing software upgrade recovery
+
+[Database upgrade rehearsal](operations/README.md) adds an isolated, executable PostgreSQL failure comparison and support runbook. Transactional migration passed 5/5 fixed scenarios versus 2/5 for autocommit. No Klarity, Oracle, production rollout or application-binary rollback is claimed. Overall scoped requirements: 6/9 verified, 3 not executed; Lean model 3/3 separately.
