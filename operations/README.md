@@ -54,3 +54,10 @@ Implementation requirements: 6/9 verified, 0 known failures, 3 not executed. Thi
 ## Not implemented
 
 Production deployment controller, application binary rollback, PostgreSQL backup restoration, Oracle compatibility, distributed transactions, destructive/nontransactional migrations, durable crash recovery, and Klarity integration. The existing Spring application has not been revalidated by this database-only addition. Its separate integration tests remain the appropriate application-level gate.
+
+## Primary references
+
+- [PostgreSQL 17 transaction tutorial](https://www.postgresql.org/docs/17/tutorial-transactions.html): transaction blocks, rollback and per-statement autocommit semantics.
+- [PostgreSQL 17 client connection defaults](https://www.postgresql.org/docs/17/runtime-config-client.html): `lock_timeout` bounds time waiting for locks. It is not a complete migration-duration bound; the harness also bounds the client subprocess.
+
+These references explain the database behavior being exercised. The synthetic fixture is not a published dataset or a reproduction of a KLA system.
