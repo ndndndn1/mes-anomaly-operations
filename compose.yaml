@@ -27,7 +27,10 @@ services:
     mem_limit: 768m
     cpus: 1.0
   postgres:
-    image: postgres:17-alpine
+    build:
+      context: .
+      dockerfile: operations/images/postgres.Dockerfile
+    image: mesops-postgres:17
     environment:
       POSTGRES_DB: mes
       POSTGRES_USER: mes
@@ -42,7 +45,10 @@ services:
     mem_limit: 512m
     cpus: 1.0
   redis:
-    image: redis:7-alpine
+    build:
+      context: .
+      dockerfile: operations/images/redis.Dockerfile
+    image: mesops-redis:7
     command: ["redis-server", "--appendonly", "no", "--maxmemory", "64mb", "--maxmemory-policy", "allkeys-lru"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]

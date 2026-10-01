@@ -1,0 +1,17 @@
+{
+  "compiler": "Lean (version 4.33.1, x86_64-unknown-linux-gnu, commit 819816b2e0a3bf405af45ae5c7af2491d8f5bee6, Release)",
+  "source_sha256": "e84fa6a0700e68b5d02dfc3bb09f48e8a638bb04fb07e7ed2776792bd90045a6",
+  "theorems_checked": [
+    "initial_safe",
+    "preserves_safe",
+    "reachable_safe",
+    "destructive_requires_verified_backup",
+    "uncertain_blocks_ingress",
+    "no_other_owner_step",
+    "no_blind_launch_after_interruption"
+  ],
+  "passed": 7,
+  "total": 7,
+  "compiler_output": "'Operations.initial_safe' depends on axioms: [propext]\n'Operations.preserves_safe' depends on axioms: [propext]\n'Operations.reachable_safe' depends on axioms: [propext]\n'Operations.destructive_requires_verified_backup' depends on axioms: [propext]\n'Operations.uncertain_blocks_ingress' depends on axioms: [propext]\n'Operations.no_other_owner_step' depends on axioms: [propext]\n'Operations.no_blind_launch_after_interruption' depends on axioms: [propext]",
+  "scope": "abstract upgrade protocol only; external validation evidence is assumed, not proved; no proof of Python, Docker, PostgreSQL or MongoDB internals"
+}

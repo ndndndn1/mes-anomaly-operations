@@ -3,17 +3,31 @@
 ## Create an evaluation
 
 ```bash
+python3 - <<'PYTHON' > event.json
+from datetime import datetime, timezone
+import json
+import uuid
+print(json.dumps({
+    "eventId": "operator-" + uuid.uuid4().hex,
+    "lineId": "line-a",
+    "equipmentId": "press-7",
+    "limits": {"temperature": {"low": 10, "high": 80}},
+    "samples": [{"timestamp": datetime.now(timezone.utc).isoformat(),
+                 "values": {"temperature": 92}}]
+}))
+PYTHON
 curl --fail-with-body http://127.0.0.1:8802/api/v1/evaluations \
   -H 'Content-Type: application/json' \
   -H 'X-Request-ID: operator-example-1' \
-  --data '{
-    "eventId":"line-a-20260811-000001",
-    "lineId":"line-a",
-    "equipmentId":"press-7",
-    "limits":{"temperature":{"low":10,"high":80}},
-    "samples":[{"timestamp":"2026-08-11T12:00:00Z","values":{"temperature":92}}]
-  }'
+  --data-binary @event.json
 ```
+
+Generate the synthetic payload once, then keep the same file for a retry. Running
+the generator again creates a new event. The timestamp is generated at execution
+time so this example does not expire as a hard-coded historical date would.
+For an `operations.control` installation, deliver the same file with
+`python3 -m operations.control evaluate --manifest deployment.json < event.json`;
+that isolated stack does not expose the Compose example's HTTP port.
 
 A new event returns `201`; an identical replay returns `200`. The response contains an ordered
 verdict per measurement. `score` is nullable: it is `null` for an absolute-limit verdict and a

@@ -1,0 +1,63 @@
+{
+  "scope": "Local exact-image scanner findings; not full host or customer production approval",
+  "images": [
+    {
+      "role": "application",
+      "image_id": "sha256:13f61cef0f9e26be5e6f5d22c7e40d1f4546d03106172173ab0c9204b48a2104",
+      "scanned_at_utc": "2026-10-01T00:11:54.615380+00:00",
+      "vulnerability_counts": {
+        "MEDIUM": 39,
+        "LOW": 4
+      },
+      "sbom_components": 229,
+      "coverage": [
+        {
+          "type": "ubuntu",
+          "packages": 140
+        },
+        {
+          "type": "jar",
+          "packages": 74
+        },
+        {
+          "type": "gobinary",
+          "packages": 13
+        }
+      ],
+      "high_critical_gate": "passed"
+    },
+    {
+      "role": "postgres",
+      "image_id": "sha256:433cd5ff23031f61c2dfc980a562df564d0fb2c730261526acc28fca5e201de9",
+      "scanned_at_utc": "2026-10-01T00:24:28.223920+00:00",
+      "vulnerability_counts": {},
+      "sbom_components": 46,
+      "coverage": [
+        {
+          "type": "alpine",
+          "packages": 45
+        }
+      ],
+      "high_critical_gate": "passed"
+    },
+    {
+      "role": "redis",
+      "image_id": "sha256:b9826fd9cbcd1e629ed908b299204f5b73a7190711464020a3b0d0e44c0a1eba",
+      "scanned_at_utc": "2026-10-01T00:29:56.233831+00:00",
+      "vulnerability_counts": {},
+      "sbom_components": 17,
+      "coverage": [
+        {
+          "type": "alpine",
+          "packages": 16
+        }
+      ],
+      "high_critical_gate": "passed"
+    }
+  ],
+  "limitations": [
+    "Time-specific database coverage; no claim of vulnerability-free software.",
+    "Application Medium and Low findings remain.",
+    "Build and runtime acceptance are separate checks."
+  ]
+}

@@ -1,0 +1,9 @@
+.git
+.env
+.env.*
+.venv
+**/__pycache__
+**/*.pyc
+target
+web/node_modules
+web/dist

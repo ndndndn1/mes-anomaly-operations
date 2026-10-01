@@ -68,4 +68,12 @@ provider in any real deployment and terminate TLS at an authenticated ingress.
 
 ## Manufacturing software upgrade recovery
 
-[Database upgrade rehearsal](operations/README.md) adds an isolated, executable PostgreSQL failure comparison and support runbook. Transactional migration passed 5/5 fixed scenarios versus 2/5 for autocommit. No Klarity, Oracle, production rollout or application-binary rollback is claimed. Overall scoped requirements: 6/9 verified, 3 not executed; Lean model 3/3 separately.
+[Manufacturing application operations](operations/README.md) provides a CLI for managed installation, backup restoration checks, release upgrades and rollback, interrupted-operation recovery, durable input replay and sanitized diagnostics. It operates this reference application's real Spring API, PostgreSQL and Redis stack on an isolated Linux Docker host.
+
+The [exact-source acceptance result](operations/acceptance-results.json) records
+22/22 passing scenarios. Upgrade and rollback each verified 10,000 events and
+240,000 measurements with no lost acknowledged events or duplicate records.
+The [operations guide](operations/README.md) reports queue latency, failed
+attempts and limits alongside the successes. The original two-row transaction
+rehearsal remains a component experiment. No Klarity, Oracle compatibility or
+customer production validation is claimed.

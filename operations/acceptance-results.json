@@ -1,0 +1,239 @@
+{
+  "cases": [
+    {
+      "case": "install-backup",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "install-resume",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "diagnostics",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "backup-integrity",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "guards",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "app-regression",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "backup-corrupt",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "restore-failure",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "queue-recovery",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "schema-upgrade",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "startup-rollback",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "invalid-sql",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "semantic-failure",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "lock-timeout",
+      "cleanup": "verified",
+      "state": "passed"
+    },
+    {
+      "case": "crash-recovery",
+      "cleanup": "verified",
+      "crash_stage": "backup",
+      "state": "passed"
+    },
+    {
+      "case": "crash-recovery",
+      "cleanup": "verified",
+      "crash_stage": "restore-created",
+      "state": "passed"
+    },
+    {
+      "case": "crash-recovery",
+      "cleanup": "verified",
+      "crash_stage": "candidate-start",
+      "state": "passed"
+    },
+    {
+      "case": "crash-recovery",
+      "cleanup": "verified",
+      "crash_stage": "candidate",
+      "state": "passed"
+    },
+    {
+      "case": "crash-recovery",
+      "cleanup": "verified",
+      "crash_stage": "decision",
+      "state": "passed"
+    },
+    {
+      "case": "crash-recovery",
+      "cleanup": "verified",
+      "crash_stage": "service",
+      "state": "passed"
+    },
+    {
+      "case": "continuous",
+      "cleanup": "verified",
+      "metrics": {
+        "acknowledged": 10000,
+        "acknowledgement_p95_seconds": 305.353,
+        "duplicate_events": 0,
+        "effective_events_per_second": 24.678,
+        "events": 10000,
+        "input_attempt_p95_seconds": 0.19644221616908908,
+        "lost_acknowledged_events": 0,
+        "maintenance_and_producer_seconds": 37.217,
+        "measurements": 240000,
+        "pending": 0,
+        "queued_during_maintenance": 8497,
+        "seconds": 405.218,
+        "seed": 1,
+        "workers": 4,
+        "write_gate_closed_seconds": 18.023
+      },
+      "outcome": "upgraded",
+      "state": "passed"
+    },
+    {
+      "case": "continuous",
+      "cleanup": "verified",
+      "metrics": {
+        "acknowledged": 10000,
+        "acknowledgement_p95_seconds": 325.834,
+        "duplicate_events": 0,
+        "effective_events_per_second": 24.511,
+        "events": 10000,
+        "input_attempt_p95_seconds": 0.19486037408933043,
+        "lost_acknowledged_events": 0,
+        "maintenance_and_producer_seconds": 29.09,
+        "measurements": 240000,
+        "pending": 0,
+        "queued_during_maintenance": 8955,
+        "seconds": 407.986,
+        "seed": 2,
+        "workers": 4,
+        "write_gate_closed_seconds": 27.088
+      },
+      "outcome": "rolled_back",
+      "state": "passed"
+    }
+  ],
+  "exporter_sha256": "25d22d18e253046964ffdbf2c42ab070ebce00104c1c0b5de3288ddbea20bb90",
+  "failed": 0,
+  "fixture_images": {
+    "invalid-sql": "sha256:42cce9ad52759143cb1613568e6f516df0e9f1fd40f496ccfc6ebe80c8b277b7",
+    "schema-upgrade": "sha256:e3247696eecf38e8647b5d5b083fb7bd910c9fdeb6934fd4e1be5b12f9c79024",
+    "semantic-failure": "sha256:90010c211690fc993d120a5d74ae0f7473d6f621a34a821a8eef8677bee08fb3",
+    "startup-failure": "sha256:c3b72c5e42fd204a04861b2ec16494e4f8f5aa09531da18fd85eaa4bbf96cbcf"
+  },
+  "images": {
+    "application_image": "sha256:13f61cef0f9e26be5e6f5d22c7e40d1f4546d03106172173ab0c9204b48a2104",
+    "cache_image": "sha256:b9826fd9cbcd1e629ed908b299204f5b73a7190711464020a3b0d0e44c0a1eba",
+    "database_image": "sha256:433cd5ff23031f61c2dfc980a562df564d0fb2c730261526acc28fca5e201de9"
+  },
+  "limitations": [
+    "Acknowledgement latency includes operator-driven queue replay.",
+    "Image vulnerability results and Lean proofs are separate gates.",
+    "Earlier failed and interrupted attempts remain in private evidence."
+  ],
+  "passed": 22,
+  "scope": "Synthetic MES reference stack; not KLA, Oracle or customer validation",
+  "source_sha256": {
+    "Dockerfile": "188b4e14e91fb4a96f7c988fb68ec086b16b689388ca2f08fcaff21fb5e2829e",
+    "compose.yaml": "5ef2dde118985dbe6b5608b3abac980fd834ff7e23acbc208be9a404c6a1a71e",
+    "operations/Specification.lean": "e84fa6a0700e68b5d02dfc3bb09f48e8a638bb04fb07e7ed2776792bd90045a6",
+    "operations/__init__.py": "eaaa269625c9af0fbdc398d39c59ac0da11088026ecbc1d1fab1775b13253756",
+    "operations/acceptance.py": "cbf28e635dd5ebc63355b73e43e9af24ad41ff2d7c0dfd47e92eab01de499fc0",
+    "operations/app_regression.py": "95c6919600e930c40ac48321cb23e0187bba5ceda6329b652f1c4aca52e985f8",
+    "operations/backup_check.py": "597021fad40d97ac738de2750c4268f54ffcad74ffe4fcaeb24e2cd04e0c2aaa",
+    "operations/cleanup_signals.py": "a957048d802d7380b8b2ad6f3bc9fc3ede754238e2dbc01c1032295a1be1c8c0",
+    "operations/control/__init__.py": "bb69da92817c96d1a0dcddf63665fa5a05d9d5dbd7a7a3a44b40ee30ead85720",
+    "operations/control/__main__.py": "47a39856b916c764920328a8107d756d3af5398cfa0872e0e1224ec79e72aabb",
+    "operations/control/backup.py": "3630d96b462c64760ebd26203d2b3e2370a46ab8b53e2f20fbb51d6be035efdf",
+    "operations/control/controller.py": "08550af04b52a30c831b6752a3ae837e18db9d151d9684e109ac05a8e66a3162",
+    "operations/control/diagnostics.py": "30220150a1828768909b26d3184de8da771a43c69e44bea615a066a7690d59bf",
+    "operations/control/journal.py": "fb63823cb4737a66a51e0e206fff2240cceccac4f9318b9876c75dfc3e529cd3",
+    "operations/control/manifest.py": "e1748a0a68198d5228f60d5bb1b511a24e8c2cda8d9e1751ea10b8ac1d436850",
+    "operations/control/preflight.py": "4d808a523a57646b4c5db8208f11a6c4b566c46b4572af4b0cf43d81291bb8b2",
+    "operations/control/restore_resources.py": "9cb5b1e0b70bc7863ffced3ac31e042e1250dffc94ac1ebd2fb1b8eceb76a1bf",
+    "operations/control/stack.py": "bccf8b0f78365186cb979381588e501d0eb3ef3b8d9576d7c9f8db9f76393812",
+    "operations/control/storage.py": "72ff3269f19874e4ad50ee3ba0c311c35aa47012cbcab9ed77695641f43c9c03",
+    "operations/crash_worker.py": "f373804bdb780305c4369ac2914dc1b05186f43a61d962f7a190bd36fc70df1b",
+    "operations/fixtures.py": "910cb37b952128c40308bc9fdcf587c94eeb43c0d2cf068e10cf205c2f5ce8cd",
+    "operations/formal_check.py": "55478219395e61545723198702fc1def8992827cd16e4a1246c23eadc213a78f",
+    "operations/guard_check.py": "8e2afa23c4c67fb6a5407d92b468390cc18f001256e19e5de5a12f0d1b5feda6",
+    "operations/images/postgres.Dockerfile": "20068cca39dc33554195473581b82830a9adc9d3da6c568bd88797b91744e751",
+    "operations/images/redis.Dockerfile": "5d25d27c07fe4e7f564b894f1660870951de7cf3790ee3f04d55b0f24998fe8f",
+    "operations/lock_fault.py": "e5575eff05181ef70ec83785630622b1a74a059115df7ebe7583a4a895de7172",
+    "operations/matrix.py": "700ec5cb9a40959ef79a78d85ee7ff9a3b392fda1597b7f5be9605291e36d773",
+    "operations/queue_check.py": "1b4780edeb5428a8d5bf83b6cd15b76b4945eacdd4118e425b309baca4da864f",
+    "operations/rehearse.py": "073bb49a9a2a8be774055a2d622202d47d1b2a89031cf47cd4efdad49f6dfdc7",
+    "operations/requirements.txt": "431627c90193cb70068c4dd340297cbc00c0cd32d3fff37dfc7313b6334942cd",
+    "operations/support_check.py": "e77a190258fe6e32684969e06e798b410b5d417b34fc7292a657b484a55d2c51",
+    "operations/tests/test_backup.py": "4c6822e9e5e0e1963fc7cd306a744d92b187fff6c066168bf91d983979614cd0",
+    "operations/tests/test_cleanup_signals.py": "8b278e972687a6d57dae13efa947f25ca34ca65b5f2abf94cdddd1de043d22da",
+    "operations/tests/test_contract.py": "ce3b6a8a74828c70fa9518325ce873acb5e1931044c4fc80e65f72da5e822290",
+    "operations/tests/test_diagnostics.py": "6c585b5fd32335a09cedf60fa35971cdaa532e63bb39d91c6594fac205e81678",
+    "operations/tests/test_http_outcomes.py": "ab7fa0a6194a5891200bf8571a5a73fcf49154ecb58323dee6232ee76a03e4bf",
+    "operations/tests/test_preflight.py": "a742309773ad1e8991bf352fdeaf7d9112d0cbcb32da9cea531145b7c403bdb3",
+    "operations/tests/test_workload.py": "27b026246a55001d6085b9cae28288cda0da19fab22340907e17fdf93aa8287c",
+    "operations/upgrade_guard_check.py": "b12f68d0f0583a6de6898b4a751ebd49116bbfe4354312d77a6f5f5045ca5663",
+    "operations/workload.py": "a17d3419def1265160edf11d11430d6ab76106b09b8155d6a1fa0ab42a416634",
+    "pom.xml": "49eae380028ff2c425a8080302d74a5dfdba514979e7ca467c013035becdca44",
+    "src/main/java/io/career262/mes/ApiExceptionHandler.java": "7c581a212f2f2a0a07c8663e617703123ce22cf15f08a5a1c710841cd524d263",
+    "src/main/java/io/career262/mes/ApiModels.java": "5d8c11ca1f6a896d2dc3d5ff86a0eb25fcaf7a9f408e6eb920943b6d8b42acca",
+    "src/main/java/io/career262/mes/ApiProblemException.java": "b05695dce4d7942ec153db48cb66d7bc2d79ba7117c1019abb706220683d795c",
+    "src/main/java/io/career262/mes/Application.java": "bd1685927ba1c1f109d3f0d13e603b15eaae7639306ac75abba69075f1235437",
+    "src/main/java/io/career262/mes/EvaluationService.java": "81f37b6bff6e5674b6c1e82e6b6b8242c871b32e52bc72d7f46739aaf0ff1256",
+    "src/main/java/io/career262/mes/JudgeController.java": "c7c747c91879411ab1aadc66c60b6dcd2ff6898cbd8b508d16e54c951adb3040",
+    "src/main/java/io/career262/mes/RequestIdFilter.java": "4008ae5d56d4927f7567f423b6e15c8a2630b4902232e3168614fc446a1ccad8",
+    "src/main/java/io/career262/mes/RequestValidator.java": "d501457cc6393e5d3c6b506765f81adbc971f6912cda471cf317cfdb6ee4775e",
+    "src/main/java/io/career262/mes/RobustDetector.java": "d379ad299cb6f25a902a641767c82087ec0ead13ba29a94fa2c98eb41c843c30",
+    "src/main/resources/application.yml": "40c0c9dfc83093c9ad4da6572d0d6a7ae6b58d9dc5739fc0b2239d1c957ba267",
+    "src/main/resources/db/migration/V1__sensor_verdict.sql": "866717ceeec8251f4fa858e155d78c76a68ad900b975cd04cfd944f7858d543b",
+    "src/main/resources/db/migration/V2__authoritative_evaluations.sql": "5e767f1f85363fa99f36091098439b5d1f786a69c3c87858dd8ec888baf70bb5",
+    "src/test/java/io/career262/mes/RequestValidatorTest.java": "80116fdd0e0305e2de79dc8d1fcd2df07bdbc4254fbfc0fbb4c517b06586b4aa",
+    "src/test/java/io/career262/mes/RobustDetectorTest.java": "90d1a5a4b741eab700465dc15deee282adc0c4975e08d522df77ba27321de8a4",
+    "test/integration.py": "c9e8f768035216fb2f0e1580dd5a9b7617a256084c3eeeb7e4dbb35a1a81f185",
+    "test/mocks/server.py": "9d15326483299a13108113508b1e1012f3538f57b51069d75a090bf544475793",
+    "test/soak.py": "f573ef26cea60f9c57c0f72fdefe544667f5d133e48940a2db0dfabe26c40c71",
+    "web/package-lock.json": "d21f37e94b210dd0ed14b0c0cb32b9bd62921b5aa1d134afc34285061506b665"
+  },
+  "total": 22,
+  "unexecuted": 0
+}

@@ -39,4 +39,4 @@ class Handler(BaseHTTPRequestHandler):
         return
 
 
-ThreadingHTTPServer(("0.0.0.0", 8080), Handler).serve_forever()
+ThreadingHTTPServer(("0.0.0.0", int(os.environ.get("MOCK_PORT", "8080"))), Handler).serve_forever()

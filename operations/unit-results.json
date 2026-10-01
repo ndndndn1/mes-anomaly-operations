@@ -1,0 +1,69 @@
+{
+  "scope": "Unit and public-report export tests; separate from Docker runtime acceptance",
+  "python_version": "3.10.20",
+  "passed": 33,
+  "commands": [
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "operations/tests",
+        "-v"
+      ],
+      "tests": 26,
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "quality.test_export_operations",
+        "-v"
+      ],
+      "tests": 7,
+      "exit_code": 0
+    }
+  ],
+  "source_sha256": {
+    "operations/__init__.py": "eaaa269625c9af0fbdc398d39c59ac0da11088026ecbc1d1fab1775b13253756",
+    "operations/acceptance.py": "cbf28e635dd5ebc63355b73e43e9af24ad41ff2d7c0dfd47e92eab01de499fc0",
+    "operations/app_regression.py": "95c6919600e930c40ac48321cb23e0187bba5ceda6329b652f1c4aca52e985f8",
+    "operations/backup_check.py": "597021fad40d97ac738de2750c4268f54ffcad74ffe4fcaeb24e2cd04e0c2aaa",
+    "operations/cleanup_signals.py": "a957048d802d7380b8b2ad6f3bc9fc3ede754238e2dbc01c1032295a1be1c8c0",
+    "operations/control/__init__.py": "bb69da92817c96d1a0dcddf63665fa5a05d9d5dbd7a7a3a44b40ee30ead85720",
+    "operations/control/__main__.py": "47a39856b916c764920328a8107d756d3af5398cfa0872e0e1224ec79e72aabb",
+    "operations/control/backup.py": "3630d96b462c64760ebd26203d2b3e2370a46ab8b53e2f20fbb51d6be035efdf",
+    "operations/control/controller.py": "08550af04b52a30c831b6752a3ae837e18db9d151d9684e109ac05a8e66a3162",
+    "operations/control/diagnostics.py": "30220150a1828768909b26d3184de8da771a43c69e44bea615a066a7690d59bf",
+    "operations/control/journal.py": "fb63823cb4737a66a51e0e206fff2240cceccac4f9318b9876c75dfc3e529cd3",
+    "operations/control/manifest.py": "e1748a0a68198d5228f60d5bb1b511a24e8c2cda8d9e1751ea10b8ac1d436850",
+    "operations/control/preflight.py": "4d808a523a57646b4c5db8208f11a6c4b566c46b4572af4b0cf43d81291bb8b2",
+    "operations/control/restore_resources.py": "9cb5b1e0b70bc7863ffced3ac31e042e1250dffc94ac1ebd2fb1b8eceb76a1bf",
+    "operations/control/stack.py": "bccf8b0f78365186cb979381588e501d0eb3ef3b8d9576d7c9f8db9f76393812",
+    "operations/control/storage.py": "72ff3269f19874e4ad50ee3ba0c311c35aa47012cbcab9ed77695641f43c9c03",
+    "operations/crash_worker.py": "f373804bdb780305c4369ac2914dc1b05186f43a61d962f7a190bd36fc70df1b",
+    "operations/fixtures.py": "910cb37b952128c40308bc9fdcf587c94eeb43c0d2cf068e10cf205c2f5ce8cd",
+    "operations/formal_check.py": "55478219395e61545723198702fc1def8992827cd16e4a1246c23eadc213a78f",
+    "operations/guard_check.py": "8e2afa23c4c67fb6a5407d92b468390cc18f001256e19e5de5a12f0d1b5feda6",
+    "operations/lock_fault.py": "e5575eff05181ef70ec83785630622b1a74a059115df7ebe7583a4a895de7172",
+    "operations/matrix.py": "700ec5cb9a40959ef79a78d85ee7ff9a3b392fda1597b7f5be9605291e36d773",
+    "operations/queue_check.py": "1b4780edeb5428a8d5bf83b6cd15b76b4945eacdd4118e425b309baca4da864f",
+    "operations/rehearse.py": "073bb49a9a2a8be774055a2d622202d47d1b2a89031cf47cd4efdad49f6dfdc7",
+    "operations/support_check.py": "e77a190258fe6e32684969e06e798b410b5d417b34fc7292a657b484a55d2c51",
+    "operations/tests/test_backup.py": "4c6822e9e5e0e1963fc7cd306a744d92b187fff6c066168bf91d983979614cd0",
+    "operations/tests/test_cleanup_signals.py": "8b278e972687a6d57dae13efa947f25ca34ca65b5f2abf94cdddd1de043d22da",
+    "operations/tests/test_contract.py": "ce3b6a8a74828c70fa9518325ce873acb5e1931044c4fc80e65f72da5e822290",
+    "operations/tests/test_diagnostics.py": "6c585b5fd32335a09cedf60fa35971cdaa532e63bb39d91c6594fac205e81678",
+    "operations/tests/test_http_outcomes.py": "ab7fa0a6194a5891200bf8571a5a73fcf49154ecb58323dee6232ee76a03e4bf",
+    "operations/tests/test_preflight.py": "a742309773ad1e8991bf352fdeaf7d9112d0cbcb32da9cea531145b7c403bdb3",
+    "operations/tests/test_workload.py": "27b026246a55001d6085b9cae28288cda0da19fab22340907e17fdf93aa8287c",
+    "operations/upgrade_guard_check.py": "b12f68d0f0583a6de6898b4a751ebd49116bbfe4354312d77a6f5f5045ca5663",
+    "operations/workload.py": "a17d3419def1265160edf11d11430d6ab76106b09b8155d6a1fa0ab42a416634",
+    "quality/export_operations.py": "25d22d18e253046964ffdbf2c42ab070ebce00104c1c0b5de3288ddbea20bb90",
+    "quality/test_export_operations.py": "6dbb65bc0713f3fe34724a3371366c63c833fa9aa6513c5976e7c586f3dd24ca"
+  }
+}

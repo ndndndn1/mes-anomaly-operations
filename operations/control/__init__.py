@@ -1,0 +1,1 @@
+"""Manufacturing application operations controller."""
