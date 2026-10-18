@@ -26,7 +26,7 @@ COPY --chown=10001:10001 --from=backend-build /workspace/target/mes-anomaly-oper
 USER 10001:10001
 CMD ["java", "-jar", "/app/app.jar"]
 
-FROM python:3.13-alpine AS integration-test
+FROM python:3.14-alpine AS integration-test
 WORKDIR /tests
 COPY test ./
 USER 65534:65534
